@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'store',
     'carts',
     'django_dump_die',
+    'orders',
 ]
 
 MIDDLEWARE = [
