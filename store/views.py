@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product, ReviewRating
+from .models import Product, ReviewRating, ProductGallery
 from category.models import Category
 from carts.models import CartItem
 from carts.views import _cart_id
@@ -38,6 +38,8 @@ def product_detail(request, category_slug, product_slug):
         int_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request), product=single_product).exists()
         orderProduct = OrderProduct.objects.filter(user=request.user, product_id=single_product.id).exists() if request.user.is_authenticated else None
         reviews = ReviewRating.objects.filter(product_id=single_product.id, status=True)
+        product_gallery = ProductGallery.objects.filter(product_id=single_product.id)
+        
     except Exception as e:
         raise e
     
@@ -46,6 +48,7 @@ def product_detail(request, category_slug, product_slug):
         'int_cart'      : int_cart,
         'order_product' : orderProduct,
         'reviews': reviews,
+        'product_gallery': product_gallery,
     }
     
     return render(request, 'store/product_detail.html', context)
